@@ -1,6 +1,4 @@
-#!/bin/bash
-
-
+#!/bin/bash 
 
 : '
 Sorteador de Números Aleatórios
@@ -15,12 +13,10 @@ Sorteador de Números Aleatórios
     * Permitir que o usuário escolha se quer repetir o sorteio com os mesmos parâmetros.
     * Salvar os resultados do sorteio em um arquivo de log com data e hora.
 '
-
+: '
 echo "INCIANDO SORTEIO!!"
-sleep 1
 echo "Informe um número MÍNIMO para sorteio:"
 read n1
-
 echo "Informe um número MÁXIMO para sorteio:"
 read n2
 
@@ -36,4 +32,42 @@ fi
 
 echo "Qual a quantidade de números que você quer sortear entre $n1 e $n2"
 read count
+'
+n1=$1
+n2=$2
+count=$3
+if [[ $n2 -gt $count ]]; then
+    
+    for (( i=0; i < $count; i++));
+    do    
+        sort=$(( $RANDOM % $n2 ))
+        array[$i]=$sort   
 
+        texto=${array[*]}
+
+        while [[ $(echo $texto | grep " $sort ") ]] || [[ $sort -le $n1 ]];
+        do
+            sort_b=$(( $RANDOM % $n2 ))
+            array[$i]=$sort_b
+        done
+            
+        echo "$(expr $i + 1)° Número é: ${array[$i]}"
+    done
+fi
+
+#SOLUÇÃO BURRA QUE NÃO RESOLVE O PROBLEMA
+: '
+    if [[ $n2 -gt $count ]]; then
+        sort=$(( $RANDOM % $n2 ))
+        for (( i=0; i < $count; i++ )) ;
+        do
+            array[$i]=$sort
+            
+            while [[ ${array[$i]} -eq $sort ]]
+            do
+                sort=$(( $RANDOM % $n2 ))
+            done
+        done
+
+        echo ${array[*]}
+    fi'
