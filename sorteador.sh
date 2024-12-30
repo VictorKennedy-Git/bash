@@ -33,28 +33,27 @@ fi
 echo "Qual a quantidade de números que você quer sortear entre $n1 e $n2"
 read count
 '
+
 n1=$1
 n2=$2
 count=$3
+array=()
 if [[ $n2 -gt $count ]]; then
     
     for (( i=0; i < $count; i++));
-    do    
-        sort=$(( $RANDOM % $n2 ))
-        array[$i]=$sort   
-
-        texto=${array[*]}
-
-        while [[ $(echo $texto | grep " $sort ") ]] || [[ $sort -le $n1 ]];
+    do      
+        while true; 
         do
-            sort_b=$(( $RANDOM % $n2 ))
-            array[$i]=$sort_b
+            sort=$(($RANDOM % $n2 + 1))
+            if [[ ! " ${array[*]} " =~ " $sort " ]] || [[ $sort -lt $n1 ]]; then
+                array[$i]=$sort
+                break
+            fi    
         done
-            
-        echo "$(expr $i + 1)° Número é: ${array[$i]}"
+        
     done
 fi
-
+echo "Número é: ${array[@]}"
 #SOLUÇÃO BURRA QUE NÃO RESOLVE O PROBLEMA
 : '
     if [[ $n2 -gt $count ]]; then
