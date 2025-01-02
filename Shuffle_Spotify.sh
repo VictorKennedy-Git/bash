@@ -37,3 +37,17 @@
     - Considere o uso de `$RANDOM` para gerar números aleatórios no Shell.
     - O algoritmo de Fisher-Yates pode ser uma boa solução para embaralhar o array.
 '
+
+
+array=("música1" "música2" "música3" "música4" "música5" "música6" "musica7")
+arraylenght=${#array[@]}
+
+for (( i=arraylenght-1; i>=0; i-- ));
+do
+    j=$(shuf -i 0-$arraylenght -n 1)+1
+    temp=${array[$i]}
+    array[$i]=${array[$j]}
+    array[$j]=$temp 
+done
+
+echo ${array[@]}
