@@ -37,23 +37,17 @@ read count
 n1=$1
 n2=$2
 count=$3
-array=()
-if [[ $n2 -gt $count ]]; then
-    
-    for (( i=0; i < $count; i++));
-    do      
-        while true; 
-        do
-            sort=$(($RANDOM % $n2 + 1))
-            if [[ ! " ${array[*]} " =~ " $sort " ]] || [[ $sort -lt $n1 ]]; then
-                array[$i]=$sort
-                break
-            fi    
-        done
-        
-    done
-fi
-echo "Número é: ${array[@]}"
+
+sort=$(shuf -i $n1-$n2 -n $count)
+
+array=($sort)
+
+for (( i=1; i<=$count; i++ ));
+do
+    echo "$i° número é: ${array[$i - 1]}"
+done
+
+
 #SOLUÇÃO BURRA QUE NÃO RESOLVE O PROBLEMA
 : '
     if [[ $n2 -gt $count ]]; then

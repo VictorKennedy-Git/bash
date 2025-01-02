@@ -20,20 +20,19 @@
     ```
 '
 
-for ((i=0; i<=5; i++)); 
+echo "Quantas cotas você quer?(1-100)"
+read count
+
+for ((j=1; j<=count; j++));
 do
-    sort=$(( $RANDOM % 61 ))    
-    lista[$i]=$sort
-    
-    texto=${lista[*]}
-    
-    while [[ $(echo $texto | grep " $sort ") ]] || [[ $sort -lt 1 ]];
-    do
-        sort=$(( $RANDOM % 61 ))    
-        lista[$i]=$sort
-    done
+    sort=($(shuf -i 1-60 -n 6))
 
-    resultado=${lista[*]}
+    texto=$(
+        for (( i=1; i<=6; i++)); 
+            do
+                echo ${sort[i-1]}
+            done | sort -h)
+
+    echo "$j° sorteio da mega da virada:"\ $texto
 done
-
-    echo $resultado
+ 
