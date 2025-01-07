@@ -28,7 +28,7 @@ case $? in
         timeout=$(expr "$tempo_teste" \* 60 \* 60)
       ;;
       OUTRO)
-        $(zenity --error --text="NÃO PROGRAMADO AINDA")
+        valor=$(zenity --forms --add-entry="Valor tempo" --add-combo="Tipo" --combo-values="Horas|Minutos|Segundos")
         exit 1
       ;;
     esac
