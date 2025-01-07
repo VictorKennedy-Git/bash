@@ -7,9 +7,8 @@
 
 #SELECT DE MAIS DE UMA OPÇAO COM ZENIRY
 
-pegartempo(){
-    form_tempo(){
-        tempo_teste=($(zenity --list --text="Tempo Para Teste" --radiolist --column="SELECIONAR"  --column="OPÇÕES" \
+
+tempo_teste=($(zenity --list --text="Tempo Para Teste" --radiolist --column="SELECIONAR"  --column="OPÇÕES" \
         TRUE "60 Seg"\
         FALSE "5 Min"\
         FALSE "15 Min" \
@@ -24,62 +23,59 @@ pegartempo(){
         --height="370"\
         --width="250"
         )
-        )
-    }
+    )
+
     case $? in
-    0)
-        case $tempo_teste in
-        5|15|30)
-            timeout=$(expr "$tempo_teste" \* 60)
+        0)
+            case $tempo_teste in
+            5|15|30)
+                timeout=$(expr "$tempo_teste" \* 60)
+            ;;
+            1|2|3|4|8|24)
+                timeout=$(expr "$tempo_teste" \* 60 \* 60)
+            ;;
+            OUTRO)
+                $(zenity --error --text="NÃO PROGRAMADO AINDA")
+                exit 1
+            ;;
+            esac
         ;;
-        1|2|3|4|8|24)
-            timeout=$(expr "$tempo_teste" \* 60 \* 60)
-        ;;
-        OUTRO)
-            $(zenity --error --text="NÃO PROGRAMADO AINDA")
+        1)
+            $(zenity --error --text="OPERAÇÃO CANCELADA")
             exit 1
         ;;
-        esac
-    ;;
-    1)
-        $(zenity --error --text="OPERAÇÃO CANCELADA")
-        exit 1
-    ;;
-    
-    -1)
-        $(zenity --error --text="ERRO INESPERADO")
-        exit 1
-    ;;
+
+        -1)
+            $(zenity --error --text="ERRO INESPERADO")
+            exit 1
+        ;;
     esac
-}
 
-
-form_domios(){
-    dominios=$(zenity --list \
-            --title="Escolha os Domínios"\
-            --text="Selecione uma ou mais opções:"\
-            --checklist\
-            --height="480"\
-            --width="300"\
-            --column="Selecionado"\
-            --column="Domínios"\
-                TRUE "youtube.com" \
-                TRUE "facebook.com" \
-                TRUE "google.com" \
-                FALSE "_gateway" \
-                FALSE "177.37.220.17" \
-                FALSE "177.37.220.18" \
-                FALSE "twitter.com" \
-                FALSE "instagram.com" \
-                FALSE "linkedin.com" \
-                FALSE "wikipedia.org" \
-                FALSE "amazon.com" \
-                FALSE "yahoo.com" \
-                FALSE "reddit.com" \
-                FALSE "github.com" \
-                FALSE "bing.com" \
-                FALSE "microsoft.com")
-    }
+dominios=$(zenity --list \
+    --title="Escolha os Domínios"\
+    --text="Selecione uma ou mais opções:"\
+    --checklist\
+    --height="480"\
+    --width="300"\
+    --column="Selecionado"\
+    --column="Domínios"\
+        TRUE "youtube.com" \
+        TRUE "facebook.com" \
+        TRUE "google.com" \
+        FALSE "_gateway" \
+        FALSE "177.37.220.17" \
+        FALSE "177.37.220.18" \
+        FALSE "twitter.com" \
+        FALSE "instagram.com" \
+        FALSE "linkedin.com" \
+        FALSE "wikipedia.org" \
+        FALSE "amazon.com" \
+        FALSE "yahoo.com" \
+        FALSE "reddit.com" \
+        FALSE "github.com" \
+        FALSE "bing.com" \
+        FALSE "microsoft.com")
+ 
     case $? in
     0)
         $(zenity --question --text="Confirmação dos Testes:\n $(echo $dominios | tr "|" "\n")")
@@ -94,11 +90,6 @@ form_domios(){
         exit 1
     ;;
     esac
-}
-pegartempo
-pegardomios   
-
-
 
 : '
 dominios=$(zenity --list \
