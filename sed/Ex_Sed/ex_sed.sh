@@ -87,27 +87,57 @@ done | sed -n "2, 4p"'
 # 9. Substituição com Expressões Regulares Avançadas
 # Enunciado: Formatar datas de "dd/mm/yyyy" para "yyyy/mm/dd".
 # Descrição: Crie um texto ou uma lista de datas nos formatos "dd/mm/yyyy", "dd|mm|yyyy" ou "dd-mm-yyyy" e formate todas as datas para o formato "yyyy/mm/dd".
-echo -e "dd/mm/yyyy \ndd|mm|yyyy \ndd-mm-yyyy"
+
+: '
+echo -e "30:12:2004 \n09|10|2002 \n11-10-2008" | sed -E "s/([0-9]{2})[-:|]([0-9]{2})+[-:|]([0-9]{4})/\3\/\2\/\1/g"
+' 
 
 # 10. Manipulação de Arquivo de Configuração
 # Enunciado: Substitua a configuração de "Port 80" por "Port 443" e insira "ServerName example.org" após a linha "Port 443".
 # Descrição: Crie uma configuração de servidor fictícia com a linha "Port 80". Substitua essa linha por "Port 443" e adicione "ServerName example.org" após "Port 443".
 
+: 'config1="Port 80"
+config2="Server Name example.com"
+
+echo -e "$config1\n$config2" | sed -E "s/([0-9])+/443/g"'
+
 # 11. Substituir Delimitadores em Dados
 # Enunciado: Substitua os delimitadores de data ("/", "|", "-") por uma barra "/" em diferentes formatos de data.
 # Descrição: Crie uma lista de datas com diferentes delimitadores ("/", "|", "-") e substitua todos os delimitadores por uma barra "/" para padronizar o formato da data.
+
+: '
+echo -e "15/01/2025\n15-01-2025\n15.01.2025\n2025/01/15\n2025-01-15\n2025.01.15\n15|01|2025\n15_01_2025\n2025.01.15\n15-01-2025\n2025_01_15" | \
+sed -E "s/([0-9]+)[-/._|]([0-9]+)[-/._|]([0-9]+)/\3\/\1\/\2/g"'
+
 
 # 12. Substituir Todos os Tipos de Ponto e Vírgula por Espaços
 # Enunciado: Substitua pontos e vírgulas por espaços.
 # Descrição: Crie um texto onde há pontos e vírgulas, e substitua todos esses caracteres por espaços.
 
+: 'echo -e "Eu gosto de viajar;sempre que posso;vou para novos lugares \nConhecer outras culturas é algo fascinante;além disso \nme permite aprender mais sobre o mundo  No entanto  é preciso planejar;bem  caso contrário  a viagem pode não ser;tão proveitosa" | sed "s/;/ /g"
+'
+
 # 13. Adicionar Texto no Início da Linha
 # Enunciado: Adicione a palavra "INICIO" ao início de cada linha que começa com "Estudar".
 # Descrição: Crie um texto onde algumas linhas começam com "Estudar" e adicione a palavra "INICIO" no início dessas linhas.
-
+: '
+function tome(){
+    echo "Estudar amplia nossos horizontes e nos prepara para os desafios."
+    echo "Estudar amplia nossos horizontes e nos prepara para os desafios."
+    echo "Estudar amplia nossos horizontes e nos prepara para os desafios."
+} 
+tome | sed "s/^/Inicio /g"
+'
 # 14. Substituir Cifras Monetárias
 # Enunciado: Converta valores monetários de "R$ 10,00" para "10,00 BRL".
 # Descrição: Crie uma lista de valores monetários no formato "R$ 10,00" e substitua esse formato por "10,00 BRL".
+: '
+for i in {1..10}
+do
+  echo "R$ $(printf "%.2f" $(echo "$i*10" | bc))"
+done | sed -E 's/[R$]+/BRL/g' | awk "{printf "\n" $2" "$1}"
+'
+#printf "%.2f": O comando printf é usado para formatar o resultado obtido do cálculo. A string "%.2f" indica que o número deve ser impresso com duas casas decimais, ou seja, um valor numérico com precisão de 2 casas após o ponto decimal.
 
 # 15. Remover Caracteres Especiais
 # Enunciado: Remover todos os caracteres não alfanuméricos de uma string.
